@@ -35,6 +35,7 @@ public class AnaSayfa {
         });
 
         frame.setVisible(true);
+
     }
 
 
