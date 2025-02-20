@@ -8,7 +8,8 @@ import java.io.FileReader;
 
 public class AnaSayfa {
     JFrame frame;
-    public AnaSayfa(){
+
+    public AnaSayfa() {
         frame = new JFrame("Şifreleme Uygulaması");
         frame.setSize(300, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,9 +36,7 @@ public class AnaSayfa {
         });
 
         frame.setVisible(true);
-
     }
-
 
 
 

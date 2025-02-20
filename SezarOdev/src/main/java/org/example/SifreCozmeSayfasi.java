@@ -1,17 +1,21 @@
 package org.example;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SifreCozmeSayfasi {
-    JTextField keyField;
-    JTextField sifreliMesajField;
-    JTextField sonucField;
-    JFrame frame;
-    JLabel keyLabel = new JLabel("Anahtar (0-25):");
+    JTextField keyField, sifreliMesajField, sonucField;
     JButton cozButonu;
-    public SifreCozmeSayfasi(){
+    JFrame frame;
+
+    public SifreCozmeSayfasi() {
+        frame.setTitle("Şifre Çözme Sayfası");
+        frame.setSize(300, 200);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setLayout(null);
+
         JLabel keyLabel = new JLabel("Anahtar (0-25):");
         keyLabel.setBounds(10, 10, 100, 25);
         frame.add(keyLabel);
@@ -46,7 +50,7 @@ public class SifreCozmeSayfasi {
             }
         });
 
-       frame.setVisible(true);
+        frame.setVisible(true);
     }
 
     private String sezarCoz(String sifreliMesaj, int key) {
@@ -62,4 +66,3 @@ public class SifreCozmeSayfasi {
         return cozulmusMetin.toString();
     }
 }
-
