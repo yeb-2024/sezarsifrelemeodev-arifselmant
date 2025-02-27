@@ -5,64 +5,70 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SifreCozmeSayfasi {
-    JTextField keyField, sifreliMesajField, sonucField;
-    JButton cozButonu;
+public class SifreCozmeSayfasi implements ActionListener {
     JFrame frame;
+    JTextField keyTextField;
+    JTextField passTextField;
+    JButton sifreleButon;
+    Font font;
+    SifrelemeServisi sifrelemeServisi;
 
-    public SifreCozmeSayfasi() {
-        frame.setTitle("Şifre Çözme Sayfası");
-        frame.setSize(300, 200);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setLayout(null);
+    public SifreCozmeSayfasi(){
+        frame = new JFrame("Şifre Çözme Sayfası");
+        font = new Font("Arial",Font.BOLD,20);
+        keyTextField = TextFieldOlustur();
+        passTextField = TextFieldOlustur();
+        sifreleButon = butonOlustur("Çöz");
+        sifrelemeServisi = new SifrelemeServisi();
 
-        JLabel keyLabel = new JLabel("Anahtar (0-25):");
-        keyLabel.setBounds(10, 10, 100, 25);
-        frame.add(keyLabel);
+    }
 
-        keyField = new JTextField();
-        keyField.setBounds(120, 10, 150, 25);
-        frame.add(keyField);
+    public void baslat(){
+        JPanel ustPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        ustPanel.add(new JLabel("Anahtar"));
+        ustPanel.add(keyTextField);
 
-        JLabel mesajLabel = new JLabel("Şifreli Mesaj:");
-        mesajLabel.setBounds(10, 40, 100, 25);
-        frame.add(mesajLabel);
+        JPanel altPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        altPanel.add(new JLabel("Şifre"));
+        altPanel.add(passTextField);
 
-        sifreliMesajField = new JTextField();
-        sifreliMesajField.setBounds(120, 40, 150, 25);
-        frame.add(sifreliMesajField);
+        frame.add(ustPanel);
+        frame.add(altPanel);
+        frame.add(sifreleButon);
 
-        cozButonu = new JButton("Çöz");
-        cozButonu.setBounds(10, 70, 260, 30);
-        frame.add(cozButonu);
-
-        sonucField = new JTextField();
-        sonucField.setBounds(10, 110, 260, 25);
-        sonucField.setEditable(false);
-        frame.add(sonucField);
-
-        cozButonu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int key = Integer.parseInt(keyField.getText());
-                String sifreliMesaj = sifreliMesajField.getText();
-                sonucField.setText(sezarCoz(sifreliMesaj, key));
-            }
-        });
-
+        frame.setLayout(new GridLayout(3,1));
+        frame.setSize(300,300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 
-    private String sezarCoz(String sifreliMesaj, int key) {
-        StringBuilder cozulmusMetin = new StringBuilder();
-        for (char ch : sifreliMesaj.toCharArray()) {
-            if (Character.isLetter(ch)) {
-                char base = Character.isUpperCase(ch) ? 'A' : 'a';
-                cozulmusMetin.append((char) ((ch - base - key + 26) % 26 + base));
-            } else {
-                cozulmusMetin.append(ch);
-            }
-        }
-        return cozulmusMetin.toString();
+    public JTextField TextFieldOlustur(){
+        JTextField textField = new JTextField();
+        textField.setFont(font);
+        textField.setPreferredSize(new Dimension(200,50));
+        return textField;
+
+    }
+
+    public JButton butonOlustur(String yazi){
+        JButton button = new JButton(yazi);
+        button.setFont(font);
+        button.addActionListener(this);
+        return button;
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String anahtar = keyTextField.getText().trim();
+        String sifre = passTextField.getText().trim();
+        String mesaj = sifrelemeServisi.decript(sifre,Integer.parseInt(anahtar));
+        System.out.println("Anahtar: " + anahtar);
+        System.out.println("Şifre : " + sifre);
+        System.out.println("Mesaj: " + mesaj);
+
+        JOptionPane.showMessageDialog(frame, "Mesaf: "+mesaj,"Şifreleme Sonucu",JOptionPane.INFORMATION_MESSAGE     );
+        System.out.println(mesaj);
+
     }
 }
